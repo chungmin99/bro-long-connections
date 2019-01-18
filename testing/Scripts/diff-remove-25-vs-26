@@ -20,4 +20,21 @@ BEGIN { FS="\t"; OFS="\t"; }
     }
 
 { print }
+' | awk '
+BEGIN { FS="\t"; OFS="\t"; }
+
+/^[^#]/ {
+    if ( column > 0 && $column == "bro" ) {
+        $column = "-";
+    }
+}
+
+/^#fields/ {
+    for ( i = 2; i <= NF; ++i ) {
+        if ( $i == "peer_descr" )
+            column = i - 1;
+        }
+    }
+
+{ print }
 '
